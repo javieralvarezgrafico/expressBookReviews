@@ -53,6 +53,7 @@ regd_users.post("/login", (req,res) => {
     }
 });
 
+// TAREA 8
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
     const bookIsbn = req.params.isbn;
@@ -70,6 +71,25 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 
     bookRequested.reviews[username] = review;
     return res.status(200).json({ message: "Review successfully added/updated." });
+});
+
+// TAREA 9.
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    const bookIsbn = req.params.isbn;
+    const username = req.session.authorization?.username;
+    const bookReviewed = books[bookIsbn];
+
+    if (!bookReviewed) {
+        return res.status(404).json({ message: "Book not found." });
+    }
+
+    if (!bookReviewed.reviews[username]) {
+        return res.status(404).json({ message: "No review found for this user." });
+    }
+
+    delete bookReviewed.reviews[username];
+
+    return res.status(200).json({ message: "Review from user " + username + " deleted successfully." });
 });
 
 module.exports.authenticated = regd_users;
