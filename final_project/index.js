@@ -10,6 +10,7 @@ app.use(express.json());
 
 app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUninitialized: true}))
 
+// Actualizando el código para el mecanismo de autenticación
 app.use("/customer/auth/*", function auth(req,res,next){
     // Check if user is logged in and has valid access token
     if (req.session.authorization) {
